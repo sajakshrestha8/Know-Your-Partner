@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jura:wght@300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik+Vinyl&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Homemade+Apple&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jura:wght@300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Rubik+Vinyl&display=swap');
 
+:root{
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+}
 
 body{
     margin: 0;
@@ -9,6 +14,7 @@ body{
 
 .wrapper{
     background-image: url("./assets/background.jpg");
+    background-blend-mode: multiply;
     width: 50%;
     height: 100vh;
     background-repeat: no-repeat;
@@ -25,6 +31,7 @@ body{
     font-weight: 700;
     text-align: center;
     margin-bottom: 6px;
+    color: var(--primary-color);
 }
 
 .qnaWrapper{
@@ -32,7 +39,6 @@ body{
     grid-template-rows: 1fr 1fr 1fr;
     width: 90%;
     margin: auto;
-    gap: 10px;
 }
 
 .question{
@@ -45,7 +51,6 @@ body{
     height: 100%;
     width: calc(100% - 15px);
     padding: 2px 5px 2px 5px;
-    color: red;
     font-size: 18px;
     font-weight: 600;
 }
@@ -60,6 +65,7 @@ body{
     width: 90%;
     margin: auto;
     text-align: justify;
+    color: var(--secondary-color);
 }
 
 .button{
@@ -69,15 +75,28 @@ body{
 }
 
 button{
-    padding: 5px 20px 5px 20px;
+    padding-top: 2px;
+    padding-right: 20px;
+    padding-bottom: 2px;
+    padding-left: 20px;
     border-radius: 4px;
     border: none;
-    border: 1px solid blue;
+    border: 1.5px solid var(--primary-color);
     background: transparent;
-    color: blue;
+    color: var(--primary-color);
+    transition: 0.2s ease-in-out;
 }
 
 button:hover{
-    background-color: #007bff;
+    background-color: var(--primary-color);
     color: white;
+}
+
+.message{
+    font-family: "Homemade Apple", cursive;
+    font-size: 16px;
+    width: 90%;
+    margin: auto;
+    text-align: justify;
+    color: #ff009e;
 }
