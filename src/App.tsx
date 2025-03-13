@@ -45,7 +45,7 @@ const App = () => {
 
   const [x, setX] = useState<number>(0) ;
   const finalMessage: string =
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
+    "Sweetheart, I wanted to write you a love letter. I know it’s a little silly, but I’d try anyway. It’s just that I feel so much when I’m with you that I try to put it in words so that you know how I feel about you. You are such a gift to me. Having you in my life is such a blessing.";
 
   const percetage: number = (x / 100) * finalMessage.length;
 
