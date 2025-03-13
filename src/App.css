@@ -104,3 +104,24 @@ button:hover{
 .readMore{
     display: block;
 }
+
+.readMoreQuestion{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.readMoreAnswer{
+    margin-bottom: 10px;
+}
+
+.readMoreHeading{
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: red;
+}
+
+.readMoreWrapper{
+    width: 95%;
+    margin: auto;
+}

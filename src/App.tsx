@@ -13,6 +13,7 @@ const App = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [result, setResult] = useState<number>(0);
   const [readMoreBtn, setReadMoreBtn] = useState<boolean>(false);
+  const [wrongAnswers, setWrongAnswers] = useState<Qna[]>([])
 
   const data: Array<Qna> = [
     {
@@ -49,7 +50,6 @@ const App = () => {
   const percetage: number = (x / 100) * finalMessage.length;
 
   const slicedMessage: string = finalMessage.slice(0, percetage);
-  console.log(slicedMessage)
 
   const handleAnswer = (e: ChangeEvent<HTMLInputElement>) => {
     setUsedAnswer(e.target.value);
@@ -62,7 +62,15 @@ const App = () => {
     if (inputAnswer === a) {
       setResult(result + 1);
       setX(x + (100/data.length));
+    }else{
+      setWrongAnswers([...wrongAnswers, {
+        id: data[currentIndex].id,
+        question: data[currentIndex].question,
+        answer: data[currentIndex].answer,
+      }])
     }
+    console.log(data[currentIndex]);
+    console.log(wrongAnswers)
   };
 
   const readMore = () => {
@@ -108,18 +116,24 @@ const App = () => {
           ) :
               <>
                 <div className="message">❤️❤️{slicedMessage.length <=0 ? "Sry, No message to display" : slicedMessage}❤️❤️</div>
-                {slicedMessage.length < 5 ? <div className="readMore"><button onClick={readMore}>Read More</button></div> : ""}
+                {slicedMessage.length < finalMessage.length ? <div className="readMore"><button onClick={readMore}>Read More</button></div> : ""}
                 {readMoreBtn ?
-                 <>
-                  <label>You can Retry for your wrong answers</label>
-                  {data?.map(({question}, index) => {
+                 <div className="readMoreWrapper">
+                  <div className="readMoreHeading">
+                    <label>Answers You were wrong in</label>
+                  </div>
+                  {wrongAnswers?.map(({id, question, answer}, index) => {
                     return(
                       <div key={index}>
-                        <label>{question}</label>
+                        <div className="readMoreQuestion">
+                          <label>{id}. {question}?</label>
+                        </div>
+                        <div className="readMoreAnswer">
+                          <label> <b>ans:</b> {answer}</label></div>
                       </div>
                     )
                   })}
-                 </> 
+                 </div> 
                  : ""}
               </>
           }
