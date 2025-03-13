@@ -15,8 +15,8 @@ body{
 .wrapper{
     background-image: url("./assets/background.jpg");
     background-blend-mode: multiply;
-    width: 50%;
-    height: 100vh;
+    max-width: 600px;
+    min-height: 100vh;
     background-repeat: no-repeat;
     background-size: cover;
     margin: auto;
@@ -99,4 +99,8 @@ button:hover{
     margin: auto;
     text-align: justify;
     color: #ff009e;
+}
+
+.readMore{
+    display: block;
 }

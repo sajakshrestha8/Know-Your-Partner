@@ -12,6 +12,7 @@ const App = () => {
   const [usedAnswer, setUsedAnswer] = useState<string>("");
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [result, setResult] = useState<number>(0);
+  const [readMoreBtn, setReadMoreBtn] = useState<boolean>(false);
 
   const data: Array<Qna> = [
     {
@@ -41,15 +42,14 @@ const App = () => {
     },
   ];
 
-  const x: number = 20;
+  const [x, setX] = useState<number>(0) ;
   const finalMessage: string =
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
 
   const percetage: number = (x / 100) * finalMessage.length;
 
   const slicedMessage: string = finalMessage.slice(0, percetage);
-
-  console.log((x / 100) * finalMessage.length);
+  console.log(slicedMessage)
 
   const handleAnswer = (e: ChangeEvent<HTMLInputElement>) => {
     setUsedAnswer(e.target.value);
@@ -61,8 +61,13 @@ const App = () => {
     const inputAnswer = usedAnswer.toLowerCase();
     if (inputAnswer === a) {
       setResult(result + 1);
+      setX(x + (100/data.length));
     }
   };
+
+  const readMore = () => {
+    setReadMoreBtn(true);
+  }
 
   return (
     <>
@@ -100,13 +105,24 @@ const App = () => {
                 </button>
               </div>
             </div>
-          ) : result < 2 ? (
-            <>
-              <div className="message">❤️❤️{slicedMessage}❤️❤️</div>
-            </>
-          ) : (
-            <div>You know your partner very very well Nice {result}</div>
-          )}
+          ) :
+              <>
+                <div className="message">❤️❤️{slicedMessage.length <=0 ? "Sry, No message to display" : slicedMessage}❤️❤️</div>
+                {slicedMessage.length < 5 ? <div className="readMore"><button onClick={readMore}>Read More</button></div> : ""}
+                {readMoreBtn ?
+                 <>
+                  <label>You can Retry for your wrong answers</label>
+                  {data?.map(({question}, index) => {
+                    return(
+                      <div key={index}>
+                        <label>{question}</label>
+                      </div>
+                    )
+                  })}
+                 </> 
+                 : ""}
+              </>
+          }
         </div>
       </div>
     </>
