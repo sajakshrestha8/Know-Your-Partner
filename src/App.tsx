@@ -14,6 +14,7 @@ const App = () => {
   const [result, setResult] = useState<number>(0);
   const [readMoreBtn, setReadMoreBtn] = useState<boolean>(false);
   const [wrongAnswers, setWrongAnswers] = useState<Qna[]>([])
+  const [isVisible, setIsVisible] = useState<boolean>(true)
 
   const data: Array<Qna> = [
     {
@@ -58,7 +59,7 @@ const App = () => {
   const handleSubmit = (a: string) => {
     setUsedAnswer("");
     setCurrentIndex(currentIndex + 1);
-    const inputAnswer = usedAnswer.toLowerCase();
+    const inputAnswer = usedAnswer.toLowerCase().trim();
     if (inputAnswer === a) {
       setResult(result + 1);
       setX(x + (100/data.length));
@@ -74,7 +75,9 @@ const App = () => {
   };
 
   const readMore = () => {
+    console.log("button Click")
     setReadMoreBtn(true);
+    setIsVisible(false);
   }
 
   return (
@@ -116,7 +119,7 @@ const App = () => {
           ) :
               <>
                 <div className="message">❤️❤️{slicedMessage.length <=0 ? "Sry, No message to display" : slicedMessage}❤️❤️</div>
-                {slicedMessage.length < finalMessage.length ? <div className="readMore"><button onClick={readMore}>Read More</button></div> : ""}
+                {slicedMessage.length < finalMessage.length ? <>{isVisible ? <div onClick={readMore}><button>Read More</button></div> : ""}</>  : ""}
                 {readMoreBtn ?
                  <div className="readMoreWrapper">
                   <div className="readMoreHeading">
