@@ -1,26 +1,36 @@
+/* eslint-disable no-undef */
 /* eslint-disable @typescript-eslint/no-var-requires */
-// eslint-disable-next-line no-undef
 const express = require("express");
 const app = express();
 const Port = 8080;
-let data = [];
+const dbConnection = require("./DBconnection/connection");
 
 app.use(express.json());
 
-app.get("/",(req, res) => {
-    res.send("Test");
-})
+app.get("/", (req, res) => {
+  res.send("Test");
+});
 
-app.post("/addDetails", (req,res) => {
-    let {id, question, answer} = req.body;
-    data.push({
-        id: id,
-        question: question,
-        answer: answer
-    })
-    res.send(data);
-})
+app.post("/addDetails", (req, res) => {
+  let { question, answer } = req.body;
+  const sql = `INSERT INTO data (Question, Answer) VALUES ("${question}", "${answer}")`;
+
+  dbConnection.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.status(200).json({
+      messege: "Question added successfully",
+      question: question,
+      answer: answer,
+    });
+  });
+});
 
 app.listen(Port, () => {
-    console.log("server is running in port", Port);
-})
+  console.log("server is running in port", Port);
+
+  dbConnection.connect((err) => {
+    if (err) throw err;
+    console.log("connection successfull");
+  });
+});
