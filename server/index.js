@@ -17,15 +17,14 @@ app.get("/", authentication, async (req, res) => {
 });
 
 app.post("/signUp", async (req, res) => {
-  let { email, password, role } = await req.body;
-  const sql = `INSERT INTO user (Email, Password, Role) VALUES ("${email}", "${password}", "${role}")`;
+  let { email, password } = await req.body;
+  const sql = `INSERT INTO user (Email, Password) VALUES ("${email}", "${password}")`;
 
   dbConnection.query(sql, (err, result) => {
     if (err) throw err;
     res.status(200).json({
       messege: "Account created Successfully",
       email: email,
-      role: role,
     });
   });
 });
@@ -38,10 +37,10 @@ app.post("/login", async (req, res) => {
     try {
       if (err) throw err;
 
+      let userId = result[0].UserId;
       const token = jsonWebToken.sign(
         {
-          email: email,
-          password: password,
+          UserId: userId,
         },
         "sajak123",
         {

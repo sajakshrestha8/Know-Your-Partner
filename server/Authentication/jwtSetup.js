@@ -9,12 +9,8 @@ function generateToken(req, res, next) {
   const token = authHeader.split(" ")[1];
 
   const verification = jsonWebToken.verify(token, "sajak123");
-
-  if (!verification) {
-    res.status(401).send("Unauthorized client error");
-  } else {
-    next();
-  }
+  req.UserId = verification.UserId;
+  next();
 }
 
 module.exports = generateToken;

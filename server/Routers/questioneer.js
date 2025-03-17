@@ -2,15 +2,18 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const express = require("express");
 const dbConnection = require("../DBconnection/connection");
+const authentication = require("../Authentication/jwtSetup");
 
 const router = express.Router();
 router.use(function (req, res, next) {
   next();
 });
 
-router.route("/addDetails").post(async (req, res) => {
+router.route("/addDetails").post(authentication, async (req, res) => {
   let { question, answer } = await req.body;
-  const sql = `INSERT INTO data (Question, Answer) VALUES ("${question}", "${answer}")`;
+  const requestedUserId = req.UserId;
+
+  const sql = `INSERT INTO data (Question, Answer, UserId) VALUES ("${question}", "${answer}", "${requestedUserId}")`;
 
   dbConnection.query(sql, async (err) => {
     if (err) throw err;
@@ -19,6 +22,14 @@ router.route("/addDetails").post(async (req, res) => {
       question: question,
       answer: answer,
     });
+  });
+});
+
+router.route("/addMessage").post(async (req, res) => {
+  let message = req.body;
+  res.status(200).json({
+    message: "New message has been added successfully",
+    data: message,
   });
 });
 
