@@ -3,15 +3,17 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const jsonWebToken = require("jsonwebtoken");
 
-function generateToken(req, res, header) {
+function generateToken(req, res, next) {
   const authHeader = req.header("Authorization");
 
   const token = authHeader.split(" ")[1];
 
   const verification = jsonWebToken.verify(token, "sajak123");
 
-  if (verification) {
-    res.send("successful");
+  if (!verification) {
+    res.status(401).send("Unauthorized client error");
+  } else {
+    next();
   }
 }
 

@@ -7,26 +7,13 @@ const jsonWebToken = require("jsonwebtoken");
 const Port = 8080;
 const dbConnection = require("./DBconnection/connection");
 const authentication = require("./Authentication/jwtSetup");
+const questioneer = require("./Routers/questioneer");
 
 app.use(express.json());
+app.use("/questioneer", questioneer);
 
 app.get("/", authentication, async (req, res) => {
   res.send("Test");
-});
-
-app.post("/addDetails", async (req, res) => {
-  let { question, answer } = await req.body;
-  const sql = `INSERT INTO data (Question, Answer) VALUES ("${question}", "${answer}")`;
-
-  dbConnection.query(sql, async (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.status(200).json({
-      messege: "Question added successfully",
-      question: question,
-      answer: answer,
-    });
-  });
 });
 
 app.post("/signUp", async (req, res) => {
