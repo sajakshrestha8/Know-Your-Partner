@@ -9,7 +9,9 @@ const dbConnection = require("./DBconnection/connection");
 const authentication = require("./Authentication/jwtSetup");
 const questioneer = require("./Routers/questioneer");
 const answerer = require("./Routers/answerer");
+const cors = require("cors");
 
+app.use(cors());
 app.use(express.json());
 app.use("/questioneer", questioneer);
 app.use("/answerer", answerer);

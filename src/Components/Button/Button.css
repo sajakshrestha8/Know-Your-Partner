@@ -1,0 +1,23 @@
+.button {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+button {
+  padding-top: 2px;
+  padding-right: 20px;
+  padding-bottom: 2px;
+  padding-left: 20px;
+  border-radius: 4px;
+  border: none;
+  border: 1.5px solid var(--primary-color);
+  background: transparent;
+  color: var(--primary-color);
+  transition: 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: var(--primary-color);
+  color: white;
+}

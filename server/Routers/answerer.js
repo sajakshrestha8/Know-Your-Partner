@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const express = require("express");
 const dbConnection = require("../DBconnection/connection");
-const authentication = require("../Authentication/jwtSetup");\
+const authentication = require("../Authentication/jwtSetup");
 
 const router = express.Router();
 

@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import "./App.css";
 import { TextField } from "@mui/material";
+import * as API from "./API/api";
+import axios from "axios";
+import Button from "./Components/Button/Button";
 
 const App = () => {
   interface Qna {
@@ -13,8 +16,21 @@ const App = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [result, setResult] = useState<number>(0);
   const [readMoreBtn, setReadMoreBtn] = useState<boolean>(false);
-  const [wrongAnswers, setWrongAnswers] = useState<Qna[]>([])
-  const [isVisible, setIsVisible] = useState<boolean>(true)
+  const [wrongAnswers, setWrongAnswers] = useState<Qna[]>([]);
+  const [isVisible, setIsVisible] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchAPI = () => {
+      axios
+        .post(API.signUp)
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((err) => console.log(err));
+    };
+
+    fetchAPI();
+  }, []);
 
   const data: Array<Qna> = [
     {
@@ -44,7 +60,7 @@ const App = () => {
     },
   ];
 
-  const [x, setX] = useState<number>(0) ;
+  const [x, setX] = useState<number>(0);
   const finalMessage: string =
     "Sweetheart, I wanted to write you a love letter. I know it’s a little silly, but I’d try anyway. It’s just that I feel so much when I’m with you that I try to put it in words so that you know how I feel about you. You are such a gift to me. Having you in my life is such a blessing.";
 
@@ -62,23 +78,26 @@ const App = () => {
     const inputAnswer = usedAnswer.toLowerCase().trim();
     if (inputAnswer === a) {
       setResult(result + 1);
-      setX(x + (100/data.length));
-    }else{
-      setWrongAnswers([...wrongAnswers, {
-        id: data[currentIndex].id,
-        question: data[currentIndex].question,
-        answer: data[currentIndex].answer,
-      }])
+      setX(x + 100 / data.length);
+    } else {
+      setWrongAnswers([
+        ...wrongAnswers,
+        {
+          id: data[currentIndex].id,
+          question: data[currentIndex].question,
+          answer: data[currentIndex].answer,
+        },
+      ]);
     }
     console.log(data[currentIndex]);
-    console.log(wrongAnswers)
+    console.log(wrongAnswers);
   };
 
   const readMore = () => {
-    console.log("button Click")
+    console.log("button Click");
     setReadMoreBtn(true);
     setIsVisible(false);
-  }
+  };
 
   return (
     <>
@@ -110,36 +129,61 @@ const App = () => {
                   className="input"
                 />
               </div>
-              <div className="button">
-                <button onClick={() => handleSubmit(data[currentIndex].answer)}>
-                  Submit
-                </button>
-              </div>
+              <Button
+                click={() => handleSubmit(data[currentIndex].answer)}
+                btnName="Submit"
+              />
             </div>
-          ) :
-              <>
-                <div className="message">❤️❤️{slicedMessage.length <=0 ? "Sry, No message to display" : slicedMessage}❤️❤️</div>
-                {slicedMessage.length < finalMessage.length ? <>{isVisible ? <div onClick={readMore}><button>Read More</button></div> : ""}</>  : ""}
-                {readMoreBtn ?
-                 <div className="readMoreWrapper">
+          ) : (
+            <>
+              <div className="message">
+                ❤️❤️
+                {slicedMessage.length <= 0
+                  ? "Sry, No message to display"
+                  : slicedMessage}
+                ❤️❤️
+              </div>
+              {slicedMessage.length < finalMessage.length ? (
+                <>
+                  {isVisible ? (
+                    <div onClick={readMore}>
+                      <button>Read More</button>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </>
+              ) : (
+                ""
+              )}
+              {readMoreBtn ? (
+                <div className="readMoreWrapper">
                   <div className="readMoreHeading">
                     <label>Answers You were wrong in</label>
                   </div>
-                  {wrongAnswers?.map(({id, question, answer}, index) => {
-                    return(
+                  {wrongAnswers?.map(({ id, question, answer }, index) => {
+                    return (
                       <div key={index}>
                         <div className="readMoreQuestion">
-                          <label>{id}. {question}?</label>
+                          <label>
+                            {id}. {question}?
+                          </label>
                         </div>
                         <div className="readMoreAnswer">
-                          <label> <b>ans:</b> {answer}</label></div>
+                          <label>
+                            {" "}
+                            <b>ans:</b> {answer}
+                          </label>
+                        </div>
                       </div>
-                    )
+                    );
                   })}
-                 </div> 
-                 : ""}
-              </>
-          }
+                </div>
+              ) : (
+                ""
+              )}
+            </>
+          )}
         </div>
       </div>
     </>
