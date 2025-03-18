@@ -11,7 +11,8 @@ router.use(function (req, res, next) {
 
 router.route("/addDetails").post(authentication, async (req, res) => {
   let { question, answer } = await req.body;
-  const requestedUserId = req.UserId;
+  let requestedUserId = req.UserId;
+  console.log(requestedUserId);
 
   const sql = `INSERT INTO data (Question, Answer, UserId) VALUES ("${question}", "${answer}", "${requestedUserId}")`;
 
@@ -25,11 +26,17 @@ router.route("/addDetails").post(authentication, async (req, res) => {
   });
 });
 
-router.route("/addMessage").post(async (req, res) => {
-  let message = req.body;
-  res.status(200).json({
-    message: "New message has been added successfully",
-    data: message,
+router.route("/addMessage").post(authentication, async (req, res) => {
+  let { message } = await req.body;
+  let requestedUserId = req.UserId;
+
+  const sql = `INSERT INTO message (UserId, Message) VALUES ( "${requestedUserId}", "${message}")`;
+  dbConnection.query(sql, async (err) => {
+    if (err) throw err;
+    res.status(200).json({
+      message: "New message has been added successfully",
+      data: message,
+    });
   });
 });
 
