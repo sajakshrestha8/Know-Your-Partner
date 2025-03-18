@@ -8,9 +8,11 @@ const Port = 8080;
 const dbConnection = require("./DBconnection/connection");
 const authentication = require("./Authentication/jwtSetup");
 const questioneer = require("./Routers/questioneer");
+const answerer = require("./Routers/answerer");
 
 app.use(express.json());
 app.use("/questioneer", questioneer);
+app.use("/answerer", answerer);
 
 app.get("/", authentication, async (req, res) => {
   res.send("Test");

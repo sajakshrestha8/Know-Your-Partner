@@ -12,7 +12,6 @@ router.use(function (req, res, next) {
 router.route("/addDetails").post(authentication, async (req, res) => {
   let { question, answer } = await req.body;
   let requestedUserId = req.UserId;
-  console.log(requestedUserId);
 
   const sql = `INSERT INTO data (Question, Answer, UserId) VALUES ("${question}", "${answer}", "${requestedUserId}")`;
 
