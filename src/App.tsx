@@ -19,18 +19,18 @@ const App = () => {
   const [wrongAnswers, setWrongAnswers] = useState<Qna[]>([]);
   const [isVisible, setIsVisible] = useState<boolean>(true);
 
-  useEffect(() => {
-    const fetchAPI = () => {
-      axios
-        .post(API.signUp)
-        .then((data) => {
-          console.log(data);
-        })
-        .catch((err) => console.log(err));
-    };
+  // useEffect(() => {
+  //   const fetchAPI = () => {
+  //     axios
+  //       .post(API.signUp)
+  //       .then((data) => {
+  //         console.log(data);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   };
 
-    fetchAPI();
-  }, []);
+  //   fetchAPI();
+  // }, []);
 
   const data: Array<Qna> = [
     {

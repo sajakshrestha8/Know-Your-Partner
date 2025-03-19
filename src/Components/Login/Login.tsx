@@ -8,25 +8,39 @@ import {
   TextField,
 } from "@mui/material";
 import "./login.css";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
+import axios from "axios";
+import * as API from "../../API/api";
+import { Link } from "react-router";
 
 const LogIn = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
+  const handleLogin = () => {
+    axios
+      .post(API.login, {
+        email: email,
+        password: password,
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
   };
 
-  const handleMouseUpPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
+  const handlEmailInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
   };
+
+  const handlPasswordInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
   return (
     <>
       <div className="mainWrapper">
@@ -37,7 +51,12 @@ const LogIn = () => {
             <label className="inputHeading">
               Enter your username or email address
             </label>
-            <TextField id="outlined-basic" label="Email" variant="outlined" />
+            <TextField
+              id="outlined-basic"
+              label="Email"
+              variant="outlined"
+              onChange={handlEmailInput}
+            />
           </div>
           <div className="inputFeildWrapper">
             <label className="inputHeading">Enter your Password</label>
@@ -48,6 +67,7 @@ const LogIn = () => {
               <OutlinedInput
                 id="outlined-adornment-password"
                 type={showPassword ? "text" : "password"}
+                onChange={handlPasswordInput}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -57,8 +77,6 @@ const LogIn = () => {
                           : "display the password"
                       }
                       onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      onMouseUp={handleMouseUpPassword}
                       edge="end"
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -72,7 +90,12 @@ const LogIn = () => {
               <label>Forget Password?</label>
             </div>
           </div>
-          <Button variant="contained">LogIn</Button>
+          <Button variant="contained" onClick={handleLogin}>
+            LogIn
+          </Button>
+          <label className="signinOption">
+            Don't have and account?<Link to={"/signUp"}> Sign In</Link>
+          </label>
         </div>
       </div>
     </>

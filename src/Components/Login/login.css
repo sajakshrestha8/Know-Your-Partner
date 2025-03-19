@@ -12,7 +12,7 @@
   max-width: 400px;
   border: 1px solid black;
   border-radius: 16px;
-  height: 45vh;
+  height: 50vh;
 }
 
 .inputFeildWrapper {
@@ -41,4 +41,9 @@
 
 .inputHeading {
   color: var(--secondary-color);
+}
+
+.signinOption {
+  font-size: 12px;
+  padding-top: 10px;
 }
