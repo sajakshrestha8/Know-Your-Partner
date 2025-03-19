@@ -1,8 +1,44 @@
+.mainWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
 .loginWrapper {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  max-width: 700px;
-  background-color: aqua;
-  height: 50vh;
+  max-width: 400px;
+  border: 1px solid black;
+  border-radius: 16px;
+  height: 45vh;
+}
+
+.inputFeildWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 10px;
+}
+
+.heading {
+  font-size: 28px;
+  font-weight: 800;
+  padding-bottom: 25px;
+}
+
+.topic {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.forgetPass {
+  font-size: 12px;
+  text-align: right;
+  color: var(--primary-color);
+}
+
+.inputHeading {
+  color: var(--secondary-color);
 }

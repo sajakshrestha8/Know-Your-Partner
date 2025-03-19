@@ -94,7 +94,6 @@ const App = () => {
   };
 
   const readMore = () => {
-    console.log("button Click");
     setReadMoreBtn(true);
     setIsVisible(false);
   };
@@ -147,7 +146,7 @@ const App = () => {
                 <>
                   {isVisible ? (
                     <div onClick={readMore}>
-                      <button>Read More</button>
+                      <Button click={readMore} btnName="Read More" />
                     </div>
                   ) : (
                     ""
