@@ -22,18 +22,25 @@ app.get("/", authentication, async (req, res) => {
 });
 
 app.post("/signUp", async (req, res) => {
-  let { email, password } = await req.body;
+  let { fullName, email, password, confirmPassword } = await req.body;
   const encryptedPass = await bcrypt.hash(password, 5);
   console.log(encryptedPass);
-  const sql = `INSERT INTO user (Email, Password) VALUES ("${email}", "${encryptedPass}")`;
 
-  dbConnection.query(sql, (err) => {
-    if (err) throw err;
-    res.status(200).json({
-      messege: "Account created Successfully",
-      email: email,
+  if (password === confirmPassword) {
+    const sql = `INSERT INTO user (FullName, Email, Password) VALUES ("${fullName}","${email}", "${encryptedPass}")`;
+
+    dbConnection.query(sql, (err) => {
+      if (err) throw err;
+      res.status(200).json({
+        messege: "Account created Successfully",
+        email: email,
+      });
     });
-  });
+  } else {
+    res.json({
+      message: "Password should be same",
+    });
+  }
 });
 
 app.post("/login", async (req, res) => {

@@ -94,7 +94,10 @@ const LogIn = () => {
             LogIn
           </Button>
           <label className="signinOption">
-            Don't have and account?<Link to={"/signUp"}> Sign In</Link>
+            Don't have and account?
+            <Link to={"/signUp"} className="signin">
+              Sign In
+            </Link>
           </label>
         </div>
       </div>
