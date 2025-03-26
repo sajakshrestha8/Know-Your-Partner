@@ -8,12 +8,19 @@ import {
   OutlinedInput,
   TextField,
 } from "@mui/material";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import "./signup.css";
 import { Link } from "react-router";
+import axios from "axios";
+import * as API from "../../API/api";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPass, setConfirmPass] = useState<string>("");
+
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
 
@@ -21,8 +28,32 @@ const Signup = () => {
   const handleClickShowConfirmPassword = () =>
     setShowConfirmPassword((show) => !show);
 
-  const handleLogin = () => {
-    console.log("click vayo");
+  const handleSignUp = () => {
+    axios
+      .post(API.signUp, {
+        fullName: name,
+        email: email,
+        password: password,
+        confirmPassword: confirmPass,
+      })
+      .then((res) => res.data.message)
+      .catch((err) => console.log(err));
+  };
+
+  const handleNameInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
+  };
+
+  const handleEmailInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const handleConfirmPasswordInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setConfirmPass(event.target.value);
   };
   return (
     <>
@@ -36,7 +67,7 @@ const Signup = () => {
               id="outlined-basic"
               label="Full Name"
               variant="outlined"
-              //   onChange={handlEmailInput}
+              onChange={handleNameInput}
             />
           </div>
           <div className="inputFeildWrapper">
@@ -47,7 +78,7 @@ const Signup = () => {
               id="outlined-basic"
               label="Email"
               variant="outlined"
-              //   onChange={handlEmailInput}
+              onChange={handleEmailInput}
             />
           </div>
           <div>
@@ -59,7 +90,7 @@ const Signup = () => {
               <OutlinedInput
                 id="outlined-adornment-password"
                 type={showPassword ? "text" : "password"}
-                // onChange={handlPasswordInput}
+                onChange={handlePasswordInput}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -88,7 +119,7 @@ const Signup = () => {
               <OutlinedInput
                 id="outlined-adornment-password"
                 type={showConfirmPassword ? "text" : "password"}
-                // onChange={handlPasswordInput}
+                onChange={handleConfirmPasswordInput}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -108,7 +139,7 @@ const Signup = () => {
               />
             </FormControl>
           </div>
-          <Button variant="contained" onClick={handleLogin}>
+          <Button variant="contained" onClick={handleSignUp}>
             Sign Up
           </Button>
           <label className="signinOption">

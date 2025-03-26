@@ -11,8 +11,8 @@ const Router = () => {
         <Route path="/" element={<ProtectedRoutes />}>
           <Route path="/" element={<App />} />
           <Route path="/login" element={<LogIn />} />
-          <Route path="/signup" element={<Signup />} />
         </Route>
+        <Route path="/signup" element={<Signup />} />
       </Routes>
     </BrowserRouter>
   );

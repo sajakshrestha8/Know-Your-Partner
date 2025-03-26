@@ -28,7 +28,7 @@ const LogIn = () => {
         password: password,
       })
       .then((data) => {
-        console.log(data);
+        console.log(data.data);
       })
       .catch((err) => console.log(err));
   };
@@ -95,7 +95,7 @@ const LogIn = () => {
           </Button>
           <label className="signinOption">
             Don't have and account?
-            <Link to={"/signUp"} className="signin">
+            <Link to={"/signup"} className="signin">
               Sign In
             </Link>
           </label>
