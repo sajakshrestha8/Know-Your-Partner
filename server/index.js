@@ -24,7 +24,6 @@ app.get("/", authentication, async (req, res) => {
 app.post("/signUp", async (req, res) => {
   let { fullName, email, password, confirmPassword } = await req.body;
   const encryptedPass = await bcrypt.hash(password, 5);
-  console.log(encryptedPass);
 
   if (password === confirmPassword) {
     const sql = `INSERT INTO user (FullName, Email, Password) VALUES ("${fullName}","${email}", "${encryptedPass}")`;
@@ -49,15 +48,10 @@ app.post("/login", async (req, res) => {
 
   dbConnection.query(sql, async (err, result) => {
     if (err) throw err;
-    console.log(result.length);
     if (result.length > 0) {
       let user = JSON.parse(JSON.stringify(result[0]));
-      console.log(user);
-      console.log(user.Password);
       bcrypt.compare(password, user.Password, (err, result) => {
         if (err) throw err;
-
-        console.log(result);
         if (result) {
           const token = jsonWebToken.sign(
             {

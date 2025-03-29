@@ -23,7 +23,6 @@ router.route("/checkAnswer").post(authentication, async (req, res) => {
       }
     });
 
-    console.log(dbANswer);
     if (answer === dbANswer[index]) {
       index = index + 1;
       console.log("answer Milyo");
