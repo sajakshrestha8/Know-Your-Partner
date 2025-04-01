@@ -3,8 +3,15 @@ import LogIn from "../Components/Login/Login";
 import { useState } from "react";
 
 const ProtectedRoutes = () => {
-  const [auth, setAuth] = useState<boolean>(false);
+  const [auth, setAuth] = useState(localStorage.getItem("token"));
 
-  return <>{auth ? <Outlet /> : <LogIn />} </>;
+  const handleLogin = () => {
+    setAuth(localStorage.getItem("token"));
+  };
+
+  window.addEventListener("storage", handleLogin);
+  console.log(auth);
+
+  return <>{auth ? <Outlet /> : <LogIn handleLogin={handleLogin} />} </>;
 };
 export default ProtectedRoutes;

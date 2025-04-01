@@ -15,11 +15,14 @@ import axios from "axios";
 import * as API from "../../API/api";
 import { Link } from "react-router";
 
-const LogIn = () => {
+interface props {
+  handleLogin?: () => void;
+}
+
+const LogIn = (props: props) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [apiData, setApiData] = useState<object>({});
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleLogin = () => {
@@ -29,7 +32,13 @@ const LogIn = () => {
         password: password,
       })
       .then((res) => {
-        setApiData(res);
+        console.log(res.data);
+        const token = res.data.token;
+        localStorage.setItem("token", token);
+
+        if (res.statusText === "OK") {
+          props?.handleLogin?.();
+        }
       })
       .catch((err) => console.log(err));
   };
