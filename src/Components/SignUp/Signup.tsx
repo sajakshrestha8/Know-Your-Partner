@@ -36,7 +36,7 @@ const Signup = () => {
         password: password,
         confirmPassword: confirmPass,
       })
-      .then((res) => res.data.message)
+      .then((res) => console.log(res.data.messege))
       .catch((err) => console.log(err));
   };
 

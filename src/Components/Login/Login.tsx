@@ -19,6 +19,7 @@ const LogIn = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [apiData, setApiData] = useState<object>({});
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleLogin = () => {
@@ -27,8 +28,8 @@ const LogIn = () => {
         email: email,
         password: password,
       })
-      .then((data) => {
-        console.log(data.data);
+      .then((res) => {
+        setApiData(res);
       })
       .catch((err) => console.log(err));
   };

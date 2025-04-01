@@ -9,6 +9,7 @@ function generateToken(req, res, next) {
   const token = authHeader.split(" ")[1];
 
   const verification = jsonWebToken.verify(token, "sajak123");
+  console.log(verification);
   req.UserId = verification.UserId;
   next();
 }

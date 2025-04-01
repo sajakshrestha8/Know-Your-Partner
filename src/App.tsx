@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import "./App.css";
 import { TextField } from "@mui/material";
-import * as API from "./API/api";
-import axios from "axios";
 import Button from "./Components/Button/Button";
 
 const App = () => {
@@ -18,19 +16,6 @@ const App = () => {
   const [readMoreBtn, setReadMoreBtn] = useState<boolean>(false);
   const [wrongAnswers, setWrongAnswers] = useState<Qna[]>([]);
   const [isVisible, setIsVisible] = useState<boolean>(true);
-
-  // useEffect(() => {
-  //   const fetchAPI = () => {
-  //     axios
-  //       .post(API.signUp)
-  //       .then((data) => {
-  //         console.log(data);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   };
-
-  //   fetchAPI();
-  // }, []);
 
   const data: Array<Qna> = [
     {
@@ -89,8 +74,6 @@ const App = () => {
         },
       ]);
     }
-    console.log(data[currentIndex]);
-    console.log(wrongAnswers);
   };
 
   const readMore = () => {
