@@ -25,21 +25,33 @@ app.post("/signUp", async (req, res) => {
   let { fullName, email, password, confirmPassword } = await req.body;
   const encryptedPass = await bcrypt.hash(password, 5);
 
-  if (password === confirmPassword) {
-    const sql = `INSERT INTO user (FullName, Email, Password) VALUES ("${fullName}","${email}", "${encryptedPass}")`;
-
-    dbConnection.query(sql, (err) => {
-      if (err) throw err;
-      res.status(200).json({
-        messege: "Account created Successfully",
-        email: email,
+  const checkEmail = `SELECT Email FROM user WHERE Email = "${email}"`;
+  dbConnection.query(checkEmail, (err, result) => {
+    if (err) throw err;
+    console.log("resultData", result);
+    console.log("Condition", result.length > 0);
+    if (result.length > 0) {
+      res.status(403).json({
+        messege: "Email already exists",
       });
-    });
-  } else {
-    res.json({
-      message: "Password should be same",
-    });
-  }
+    } else {
+      if (password === confirmPassword) {
+        const sql = `INSERT INTO user (FullName, Email, Password) VALUES ("${fullName}","${email}", "${encryptedPass}")`;
+
+        dbConnection.query({ sql, checkEmail }, (err, result) => {
+          if (err) throw err;
+          res.status(200).json({
+            messege: "Account created Successfully",
+            email: email,
+          });
+        });
+      } else {
+        res.json({
+          message: "Password should be same",
+        });
+      }
+    }
+  });
 });
 
 app.post("/login", async (req, res) => {
