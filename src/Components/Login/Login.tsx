@@ -11,36 +11,35 @@ import "./login.css";
 import { ChangeEvent, useState } from "react";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Visibility from "@mui/icons-material/Visibility";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import * as API from "../../API/api";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
-interface props {
-  handleLogin?: () => void;
-}
-
-const LogIn = (props: props) => {
+const LogIn = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleLogin = () => {
-    axios
-      .post(API.login, {
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    try {
+      const res = await axios.post(API.login, {
         email: email,
         password: password,
-      })
-      .then((res) => {
-        console.log(res.data);
-        const token = res.data.token;
-        localStorage.setItem("token", token);
-
-        if (res.statusText === "OK") {
-          props?.handleLogin?.();
-        }
-      })
-      .catch((err) => console.log(err));
+      });
+      console.log(res.data);
+      const token = res.data.token;
+      localStorage.setItem("token", token);
+      if (res.statusText === "OK") {
+        navigate("/");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error);
+      }
+    }
   };
 
   const handlEmailInput = (event: ChangeEvent<HTMLInputElement>) => {

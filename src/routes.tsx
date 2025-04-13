@@ -10,8 +10,8 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<ProtectedRoutes />}>
           <Route path="/" element={<App />} />
-          <Route path="/login" element={<LogIn />} />
         </Route>
+        <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
     </BrowserRouter>

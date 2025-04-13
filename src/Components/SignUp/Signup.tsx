@@ -10,8 +10,8 @@ import {
 } from "@mui/material";
 import { ChangeEvent, useState } from "react";
 import "./signup.css";
-import { Link } from "react-router";
-import axios from "axios";
+import { Link, useNavigate } from "react-router";
+import axios, { AxiosError } from "axios";
 import * as API from "../../API/api";
 
 const Signup = () => {
@@ -20,6 +20,7 @@ const Signup = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPass, setConfirmPass] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
@@ -28,16 +29,28 @@ const Signup = () => {
   const handleClickShowConfirmPassword = () =>
     setShowConfirmPassword((show) => !show);
 
-  const handleSignUp = () => {
-    axios
-      .post(API.signUp, {
+  const navigate = useNavigate();
+
+  const handleSignUp = async () => {
+    try {
+      const res = await axios.post(API.signUp, {
         fullName: name,
         email: email,
         password: password,
         confirmPassword: confirmPass,
-      })
-      .then((res) => console.log(res.data.messege))
-      .catch((err) => console.log(err));
+      });
+
+      if (res.status === 200) {
+        navigate("/login");
+      }
+      console.log(res);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.status === 403) {
+          setErrorMessage(error.response?.data.messege);
+        }
+      }
+    }
   };
 
   const handleNameInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -61,6 +74,7 @@ const Signup = () => {
         <div className="signupWrapper">
           <label className="topic">Welcome to Know-Your-Partner</label>
           <label className="heading">Sign Up</label>
+          {errorMessage ? <div>{errorMessage}</div> : null}
           <div className="inputFeildWrapper">
             <label className="inputHeading">Enter your Full Name</label>
             <TextField

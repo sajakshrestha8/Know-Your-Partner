@@ -3,6 +3,7 @@ import { ChangeEvent, useState } from "react";
 import "./App.css";
 import { TextField } from "@mui/material";
 import Button from "./Components/Button/Button";
+import { useNavigate } from "react-router";
 
 const App = () => {
   interface Qna {
@@ -16,6 +17,8 @@ const App = () => {
   const [readMoreBtn, setReadMoreBtn] = useState<boolean>(false);
   const [wrongAnswers, setWrongAnswers] = useState<Qna[]>([]);
   const [isVisible, setIsVisible] = useState<boolean>(true);
+
+  const navigate = useNavigate();
 
   const data: Array<Qna> = [
     {
@@ -81,8 +84,16 @@ const App = () => {
     setIsVisible(false);
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
   return (
     <>
+      <div>
+        <button onClick={handleLogout}>Log Out</button>
+      </div>
       <div className="wrapper">
         <div className="heading-wrapper">
           <div className="Headings">

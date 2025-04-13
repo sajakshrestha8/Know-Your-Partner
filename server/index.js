@@ -58,33 +58,41 @@ app.post("/login", async (req, res) => {
   let { email, password } = req.body;
   const sql = `SELECT * FROM user WHERE Email = "${email}"`;
 
-  dbConnection.query(sql, async (err, result) => {
-    if (err) throw err;
-    if (result.length > 0) {
-      let user = JSON.parse(JSON.stringify(result[0]));
-      bcrypt.compare(password, user.Password, (err, result) => {
-        if (err) throw err;
-        if (result) {
-          const token = jsonWebToken.sign(
-            {
-              UserId: user.UserId,
-            },
-            "sajak123",
-            {
-              expiresIn: "1hr",
-            }
-          );
-          res.status(200).json({
-            messege: "Login Successfull",
-            email: email,
-            token: token,
-          });
-        } else {
-          res.status(401).json({ messege: "Wrong credentials" });
-        }
-      });
+  try {
+    dbConnection.query(sql, async (err, result) => {
+      if (err) return err;
+      if (result.length > 0) {
+        let user = JSON.parse(JSON.stringify(result[0]));
+        bcrypt.compare(password, user.Password, (err, result) => {
+          if (err) throw err;
+          if (result) {
+            const token = jsonWebToken.sign(
+              {
+                UserId: user.UserId,
+              },
+              "sajak123",
+              {
+                expiresIn: "1hr",
+              }
+            );
+            res.status(200).json({
+              messege: "Login Successfull",
+              email: email,
+              token: token,
+            });
+          } else {
+            console.log("Xiryo");
+            res.status(401).json({ messege: "Wrong credentials" });
+          }
+        });
+      }
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      console.log("wrong credentials");
     }
-  });
+    console.log(error);
+  }
 });
 
 app.listen(Port, () => {
