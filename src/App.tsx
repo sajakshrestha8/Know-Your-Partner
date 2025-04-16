@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import "./App.css";
 import { TextField } from "@mui/material";
 import Button from "./Components/Button/Button";
 import { useNavigate } from "react-router";
+import axios from "axios";
 
 const App = () => {
   interface Qna {
@@ -19,34 +20,20 @@ const App = () => {
   const [isVisible, setIsVisible] = useState<boolean>(true);
 
   const navigate = useNavigate();
+  const URL = "http://localhost:8080";
+  const token = localStorage.getItem("token");
 
-  const data: Array<Qna> = [
-    {
-      id: 1,
-      question: "What is my name",
-      answer: "sajak shrestha",
-    },
-    {
-      id: 2,
-      question: "When is my birthday",
-      answer: "ashoj 15",
-    },
-    {
-      id: 3,
-      question: "Where was our first Date",
-      answer: "taudaha",
-    },
-    {
-      id: 4,
-      question: "What is my age",
-      answer: "21",
-    },
-    {
-      id: 5,
-      question: "Where do I live",
-      answer: "satungal",
-    },
-  ];
+  const [data, setData] = useState([]);
+
+  const getQuestion = useCallback(async () => {
+    const res = await axios.get(`${URL}/answerer/getquestions`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    setData(res.data.data);
+  }, [token]);
 
   const [x, setX] = useState<number>(0);
   const finalMessage: string =
@@ -60,24 +47,24 @@ const App = () => {
     setUsedAnswer(e.target.value);
   };
 
-  const handleSubmit = (a: string) => {
-    setUsedAnswer("");
-    setCurrentIndex(currentIndex + 1);
-    const inputAnswer = usedAnswer.toLowerCase().trim();
-    if (inputAnswer === a) {
-      setResult(result + 1);
-      setX(x + 100 / data.length);
-    } else {
-      setWrongAnswers([
-        ...wrongAnswers,
-        {
-          id: data[currentIndex].id,
-          question: data[currentIndex].question,
-          answer: data[currentIndex].answer,
-        },
-      ]);
-    }
-  };
+  // const handleSubmit = (a: string) => {
+  //   setUsedAnswer("");
+  //   setCurrentIndex(currentIndex + 1);
+  //   const inputAnswer = usedAnswer.toLowerCase().trim();
+  //   if (inputAnswer === a) {
+  //     setResult(result + 1);
+  //     setX(x + 100 / data.length);
+  //   } else {
+  //     setWrongAnswers([
+  //       ...wrongAnswers,
+  //       {
+  //         id: data[currentIndex].id,
+  //         question: data[currentIndex].question,
+  //         answer: data[currentIndex].answer,
+  //       },
+  //     ]);
+  //   }
+  // };
 
   const readMore = () => {
     setReadMoreBtn(true);
@@ -88,6 +75,11 @@ const App = () => {
     localStorage.clear();
     navigate("/login");
   };
+
+  // getQuestion();
+  useEffect(() => {
+    getQuestion();
+  }, [getQuestion]);
 
   return (
     <>
@@ -123,7 +115,7 @@ const App = () => {
                 />
               </div>
               <Button
-                click={() => handleSubmit(data[currentIndex].answer)}
+                // click={() => handleSubmit(data[currentIndex].answer)}
                 btnName="Submit"
               />
             </div>

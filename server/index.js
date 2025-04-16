@@ -61,7 +61,7 @@ app.post("/login", async (req, res) => {
   try {
     dbConnection.query(sql, async (err, result) => {
       if (err) return err;
-      if (result.length > 0) {
+      if (result.length !== 0) {
         let user = JSON.parse(JSON.stringify(result[0]));
         bcrypt.compare(password, user.Password, (err, result) => {
           if (err) throw err;
@@ -80,11 +80,10 @@ app.post("/login", async (req, res) => {
               email: email,
               token: token,
             });
-          } else {
-            console.log("Xiryo");
-            res.status(401).json({ messege: "Wrong credentials" });
           }
         });
+      } else {
+        res.status(401).json({ messege: "Wrong credentials" });
       }
     });
   } catch (error) {
