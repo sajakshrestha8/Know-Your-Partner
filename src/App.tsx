@@ -61,24 +61,34 @@ const App = () => {
     setUsedAnswer(e.target.value);
   };
 
-  // const handleSubmit = (a: string) => {
-  //   setUsedAnswer("");
-  //   setCurrentIndex(currentIndex + 1);
-  //   const inputAnswer = usedAnswer.toLowerCase().trim();
-  //   if (inputAnswer === a) {
-  //     setResult(result + 1);
-  //     setX(x + 100 / data.length);
-  //   } else {
-  //     setWrongAnswers([
-  //       ...wrongAnswers,
-  //       {
-  //         id: data[currentIndex].id,
-  //         question: data[currentIndex].question,
-  //         answer: data[currentIndex].answer,
-  //       },
-  //     ]);
-  //   }
-  // };
+  const handleSubmit = () => {
+    // setUsedAnswer("");
+    // setCurrentIndex(currentIndex + 1);
+    // const inputAnswer = usedAnswer.toLowerCase().trim();
+    // if (inputAnswer === a) {
+    //   setResult(result + 1);
+    //   setX(x + 100 / data.length);
+    // } else {
+    //   setWrongAnswers([
+    //     ...wrongAnswers,
+    //     {
+    //       id: data[currentIndex].id,
+    //       question: data[currentIndex].question,
+    //       answer: data[currentIndex].answer,
+    //     },
+    //   ]);
+    // }
+
+    // try {
+    //   axios.post(`${URL}/answerer/checkAnswer`, {
+    //     answer:
+    //   });
+    // } catch (error) {
+
+    // }
+
+    console.log("Yesma paxi submit hunxa");
+  };
 
   const readMore = () => {
     setReadMoreBtn(true);
@@ -112,31 +122,31 @@ const App = () => {
               read it by answering the questions below.
             </label>
           </div>
-          {data?.map((value, index) => {
-            return (
-              <>
-                <div key={index} className="qnaWrapper">
-                  <div className="question">
-                    <div>{value.Question} ?</div>
+          <form action="" onSubmit={handleSubmit}>
+            {data?.map((value, index) => {
+              return (
+                <>
+                  <div key={index} className="qnaWrapper">
+                    <div className="question">
+                      <div>{value.Question} ?</div>
+                    </div>
+                    <div>
+                      <TextField
+                        id="standard-basic"
+                        label="Enter your answer"
+                        variant="standard"
+                        value={usedAnswer}
+                        onChange={handleAnswer}
+                        className="input"
+                        required
+                      />
+                    </div>
                   </div>
-                  <div>
-                    <TextField
-                      id="standard-basic"
-                      label="Enter your answer"
-                      variant="standard"
-                      value={usedAnswer}
-                      onChange={handleAnswer}
-                      className="input"
-                    />
-                  </div>
-                  <Button
-                    // click={() => handleSubmit(data[currentIndex].answer)}
-                    btnName="Submit"
-                  />
-                </div>
-              </>
-            );
-          })}
+                </>
+              );
+            })}
+            <Button btnName="Submit" />
+          </form>
           {/* {currentIndex < data.length ? (
                 <label>
                   {`${data[currentIndex].id}. ${data[currentIndex].question}`}?
