@@ -52,3 +52,8 @@
 .signin {
   color: var(--primary-color);
 }
+
+.errorMsg {
+  color: red;
+  font-weight: 600;
+}

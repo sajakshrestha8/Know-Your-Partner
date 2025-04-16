@@ -88,9 +88,9 @@ app.post("/login", async (req, res) => {
     });
   } catch (error) {
     if (error instanceof Error) {
-      console.log("wrong credentials");
+      return res.status(401).send({ message: error.message });
     }
-    console.log(error);
+    return res.status(500).send({ message: "Internal server error" });
   }
 });
 

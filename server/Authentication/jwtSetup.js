@@ -8,10 +8,14 @@ function generateToken(req, res, next) {
 
   const token = authHeader.split(" ")[1];
 
-  const verification = jsonWebToken.verify(token, "sajak123");
-  console.log(verification);
-  req.UserId = verification.UserId;
-  next();
+  try {
+    const verification = jsonWebToken.verify(token, "sajak123");
+    console.log(verification);
+    req.UserId = verification.UserId;
+    next();
+  } catch (error) {
+    return res.status(403).send({ message: "Unauthorized" });
+  }
 }
 
 module.exports = generateToken;

@@ -49,7 +49,6 @@ router.route("/getquestions").get(authentication, async (req, res) => {
     if (error instanceof Error) {
       res.status(503).send({ message: error.message });
     }
-    console.log("yesma xa");
     res.status(500).send({ message: "Internal server error" });
   }
 });

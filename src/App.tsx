@@ -4,14 +4,18 @@ import "./App.css";
 import { TextField } from "@mui/material";
 import Button from "./Components/Button/Button";
 import { useNavigate } from "react-router";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
+interface Qna {
+  id: number;
+  question: string;
+  answer: string;
+}
+
+interface IQuestion {
+  Question: string;
+}
 const App = () => {
-  interface Qna {
-    id: number;
-    question: string;
-    answer: string;
-  }
   const [usedAnswer, setUsedAnswer] = useState<string>("");
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [result, setResult] = useState<number>(0);
@@ -23,17 +27,27 @@ const App = () => {
   const URL = "http://localhost:8080";
   const token = localStorage.getItem("token");
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<IQuestion[]>([]);
 
   const getQuestion = useCallback(async () => {
-    const res = await axios.get(`${URL}/answerer/getquestions`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      const res = await axios.get(`${URL}/answerer/getquestions`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    setData(res.data.data);
-  }, [token]);
+      setData(res.data.data);
+      console.log(res);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.status === 403) {
+          navigate("/login");
+          localStorage.clear();
+        }
+      }
+    }
+  }, [token, navigate]);
 
   const [x, setX] = useState<number>(0);
   const finalMessage: string =
@@ -76,10 +90,11 @@ const App = () => {
     navigate("/login");
   };
 
-  // getQuestion();
   useEffect(() => {
     getQuestion();
   }, [getQuestion]);
+
+  console.log(data);
 
   return (
     <>
@@ -97,28 +112,35 @@ const App = () => {
               read it by answering the questions below.
             </label>
           </div>
-          {currentIndex < data.length ? (
-            <div className="qnaWrapper">
-              <div className="question">
+          {data?.map((value, index) => {
+            return (
+              <>
+                <div key={index} className="qnaWrapper">
+                  <div className="question">
+                    <div>{value.Question} ?</div>
+                  </div>
+                  <div>
+                    <TextField
+                      id="standard-basic"
+                      label="Enter your answer"
+                      variant="standard"
+                      value={usedAnswer}
+                      onChange={handleAnswer}
+                      className="input"
+                    />
+                  </div>
+                  <Button
+                    // click={() => handleSubmit(data[currentIndex].answer)}
+                    btnName="Submit"
+                  />
+                </div>
+              </>
+            );
+          })}
+          {/* {currentIndex < data.length ? (
                 <label>
                   {`${data[currentIndex].id}. ${data[currentIndex].question}`}?
                 </label>
-              </div>
-              <div>
-                <TextField
-                  id="standard-basic"
-                  label="Enter your answer"
-                  variant="standard"
-                  value={usedAnswer}
-                  onChange={handleAnswer}
-                  className="input"
-                />
-              </div>
-              <Button
-                // click={() => handleSubmit(data[currentIndex].answer)}
-                btnName="Submit"
-              />
-            </div>
           ) : (
             <>
               <div className="message">
@@ -168,7 +190,7 @@ const App = () => {
                 ""
               )}
             </>
-          )}
+          )} */}
         </div>
       </div>
     </>

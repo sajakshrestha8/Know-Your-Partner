@@ -19,6 +19,7 @@ const LogIn = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState();
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const navigate = useNavigate();
@@ -37,6 +38,9 @@ const LogIn = () => {
       }
     } catch (error) {
       if (error instanceof AxiosError) {
+        if (error.status === 401) {
+          setErrorMessage(error.response?.data.messege);
+        }
         console.log(error);
       }
     }
@@ -54,6 +58,7 @@ const LogIn = () => {
     <>
       <div className="mainWrapper">
         <div className="loginWrapper">
+          {errorMessage && <div className="errorMsg">! {errorMessage} !</div>}
           <label className="topic">Welcome to Know-Your-Partner</label>
           <label className="heading">Log In</label>
           <div className="inputFeildWrapper">
