@@ -57,8 +57,9 @@ const App = () => {
 
   const slicedMessage: string = finalMessage.slice(0, percetage);
 
-  const handleAnswer = (e: ChangeEvent<HTMLInputElement>) => {
-    setUsedAnswer(e.target.value);
+  const handleAnswer = (event: string, i: number) => {
+    console.log(event);
+    console.log(i);
   };
 
   const handleSubmit = () => {
@@ -136,7 +137,7 @@ const App = () => {
                         label="Enter your answer"
                         variant="standard"
                         value={usedAnswer}
-                        onChange={handleAnswer}
+                        onChange={(e) => handleAnswer(e.target.value, index)}
                         className="input"
                         required
                       />

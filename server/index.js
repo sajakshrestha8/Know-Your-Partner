@@ -63,27 +63,24 @@ app.post("/login", async (req, res) => {
       if (err) return err;
       if (result.length !== 0) {
         let user = JSON.parse(JSON.stringify(result[0]));
-        bcrypt.compare(password, user.Password, (err, result) => {
-          if (err) throw err;
-          if (result) {
-            const token = jsonWebToken.sign(
-              {
-                UserId: user.UserId,
-              },
-              "sajak123",
-              {
-                expiresIn: "1hr",
-              }
-            );
-            res.status(200).json({
-              messege: "Login Successfull",
-              email: email,
-              token: token,
-            });
+        const checkPass = await bcrypt.compare(password, user.Password);
+
+        if (!checkPass)
+          return res.status(401).send({ messege: "Wrong Credentials" });
+        const token = jsonWebToken.sign(
+          {
+            UserId: user.UserId,
+          },
+          "sajak123",
+          {
+            expiresIn: "1hr",
           }
+        );
+        res.status(200).send({
+          messege: "Login Successfull",
+          email: email,
+          token: token,
         });
-      } else {
-        res.status(401).json({ messege: "Wrong credentials" });
       }
     });
   } catch (error) {
