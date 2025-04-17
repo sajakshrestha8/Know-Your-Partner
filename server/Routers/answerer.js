@@ -16,26 +16,28 @@ router.route("/checkAnswer").post(authentication, async (req, res) => {
       let dbANswer = [];
       if (err) throw err;
       let test = JSON.parse(JSON.stringify(result));
+      let correctedAnswers = [];
 
       test?.map((value) => {
         if (userId === value.UserId) {
           dbANswer.push(value.ANSWER);
         }
       });
-      console.log("answer", answer.answer);
-      console.log("DB answer", dbANswer);
 
       if (answer.answer.length !== dbANswer.length) {
         res.status(400).send({ message: "Give all the answers" });
       }
 
-      if (
-        JSON.stringify(answer.answer).toLowerCase() !==
-        JSON.stringify(dbANswer).toLowerCase()
-      )
-        return res.status(422).send({ message: "Wrong Answer" });
+      dbANswer?.map((value, index) => {
+        if (answer.answer[index].toLowerCase() === value.toLowerCase()) {
+          correctedAnswers.push(value);
+        }
+      });
 
-      res.status(200).send({ message: "Correct answers" });
+      res.status(200).send({
+        message: "Your following answers are correct",
+        data: correctedAnswers,
+      });
     });
   } catch (error) {
     if (error instanceof Error) {
