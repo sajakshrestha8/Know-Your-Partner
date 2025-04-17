@@ -7,31 +7,43 @@ const authentication = require("../Authentication/jwtSetup");
 const router = express.Router();
 
 router.route("/checkAnswer").post(authentication, async (req, res) => {
-  let { answer } = req.body;
+  let answer = req.body;
   let userId = req.UserId;
   const sql = `SELECT ANSWER, UserId FROM data`;
 
-  dbConnection.query(sql, (err, result) => {
-    let index = 0;
-    let dbANswer = [];
-    if (err) throw err;
-    let test = JSON.parse(JSON.stringify(result));
+  try {
+    dbConnection.query(sql, (err, result) => {
+      let dbANswer = [];
+      if (err) throw err;
+      let test = JSON.parse(JSON.stringify(result));
 
-    test?.map((value) => {
-      if (userId === value.UserId) {
-        dbANswer.push(value.ANSWER);
+      test?.map((value) => {
+        if (userId === value.UserId) {
+          dbANswer.push(value.ANSWER);
+        }
+      });
+      console.log("answer", answer.answer);
+      console.log("DB answer", dbANswer);
+
+      if (answer.answer.length !== dbANswer.length) {
+        res.status(400).send({ message: "Give all the answers" });
       }
+
+      if (
+        JSON.stringify(answer.answer).toLowerCase() !==
+        JSON.stringify(dbANswer).toLowerCase()
+      )
+        return res.status(422).send({ message: "Wrong Answer" });
+
+      res.status(200).send({ message: "Correct answers" });
     });
-
-    if (answer === dbANswer[index]) {
-      index = index + 1;
-      console.log("answer Milyo");
-    } else {
-      console.log("answer milena");
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(400).send({ message: error.message });
     }
-  });
-
-  res.send(answer);
+    console.log("catch ma xu ra ma?");
+    res.status(500).send({ message: "Internal Server Error" });
+  }
 });
 
 router.route("/getquestions").get(authentication, async (req, res) => {
